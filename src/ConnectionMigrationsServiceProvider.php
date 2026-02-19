@@ -22,17 +22,17 @@ class ConnectionMigrationsServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      *
-     * Re-binds Laravel's migration commands and the migration creator with our
-     * subclasses that support per-connection migration path configuration.
-     *
-     * Because Laravel's MigrationServiceProvider is a deferred provider (it only
-     * resolves when a migration command is actually run), these bindings are always
-     * registered first and will take precedence.
+     * Force-loads Laravel's MigrationServiceProvider first so that it cannot
+     * fire later as a deferred provider and overwrite our command bindings.
+     * Once a provider is loaded, Laravel's loadDeferredProvider() skips it,
+     * making our subsequent singleton() calls the permanent winners.
      *
      * @return void
      */
     public function register()
     {
+        $this->app->register(\Illuminate\Database\MigrationServiceProvider::class);
+
         $this->app->singleton(BaseMigrateCommand::class, function ($app) {
             return new MigrateCommand($app['migrator'], $app['events']);
         });
