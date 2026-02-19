@@ -9,9 +9,8 @@
         "laravel/framework": "^12.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^10.0",
         "mockery/mockery": "^1.6",
-        "phpunit/phpunit": "^12.0"
+        "orchestra/testbench": "^10.0"
     },
     "autoload": {
         "psr-4": {
